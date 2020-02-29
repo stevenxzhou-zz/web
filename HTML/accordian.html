@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" tyle="text/css" href="https://fonts.google.com/specimen/Source+Sans+Pro?selection.family=Source+Sans+Pro" />
+        <script src="https://kit.fontawesome.com/7c702f6c7f.js" crossorigin="anonymous"></script>
+        <style type="text/css">
+        body {
+            font:1em 'Source Sans Pro', sans-serif;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .main-items a {
+            text-decoration: none;
+            color: black;
+            display: flex;
+            width: 150px;
+            justify-content: space-between;
+            align-items:center;
+        }
+
+        .main-items a span {
+            text-align: center;
+        }
+
+        .main-items ul.sub-items {
+            display: none;
+        }
+
+        .main-items ul.sub-items.show {
+            display: block;
+        }
+        </style>
+    </head>
+    <body>
+        <ul class="main-items">
+            <li>
+                <a href="#"><i class="fab fa-microsoft"></i><span>Main Item 1</span><i class="fa fa-chevron-down"></i></a>
+                <ul class="sub-items">
+                    <li>Sub Item 1</li>
+                    <li>Sub Item 2</li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fab fa-amazon"></i><span>Main Item 2</span><i class="fa fa-chevron-down"></i></a>
+                <ul class="sub-items">
+                    <li>Sub Item 1</li>
+                    <li>Sub Item 2</li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fab fa-google"></i><span>Main Item 3</span><i class="fa fa-chevron-down"></i></a>
+                <ul class="sub-items">
+                    <li>Sub Item 1</li>
+                    <li>Sub Item 2</li>
+                </ul>
+            </li>
+        </ul>
+        <script>
+            var btns = document.querySelectorAll("a");
+            
+            btns.forEach((btn)=>{
+                btn.addEventListener("click", (e) => {
+
+                    // clear all others
+                    btns.forEach((b) => {
+                        b.nextElementSibling.classList.remove("show");
+                        b.lastElementChild.classList.remove("fa-chevron-up");
+                        b.lastElementChild.classList.add("fa-chevron-down");
+                    })
+
+                    // show current
+                    e.currentTarget.nextElementSibling.classList.add("show");
+                    e.currentTarget.lastElementChild.classList.add("fa-chevron-up")
+                })
+            })
+        </script>
+    </body>     
+</html>
