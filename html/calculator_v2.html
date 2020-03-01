@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" tyle="text/css" href="https://fonts.google.com/specimen/Source+Sans+Pro?selection.family=Source+Sans+Pro" />
+        <script src="https://kit.fontawesome.com/7c702f6c7f.js" crossorigin="anonymous"></script>
+        <style type="text/css">
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            
+            .calculator {
+                width: 200px;
+                background-color: black;
+                padding: 5px;
+                border-radius: 5px;
+                margin: 5px 0 0 5px;
+            }
+
+            main {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-gap: 5px;
+                width: 100%;
+            }
+
+            a {
+                text-align: center;
+                text-decoration: none;
+                color: white;
+                background-color: dimgray;
+                padding: 3px;
+                border-radius: 25px;
+            }
+
+            a:hover {
+                background-color:lightgray;
+            }
+
+            a.gridcolumn2 {
+                grid-column: 1/3;
+            }
+
+            p {
+                width: 100%;
+                text-align: right;
+                padding: 20px 3px 3px 3px;
+                font-size: 30px;  
+                color: white;              
+            }
+
+            .rightmost {
+                background-color: goldenrod;
+            }
+
+            .top {
+                background-color: darkgray;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculator">
+            <p>0</p>
+            <main>
+                <a href="#" class="top">AC</a>
+                <a href="#" class="top">+/-</a>
+                <a href="#" class="top">%</a>
+                <a href="#" class="rightmost">/</a>
+                <a href="#">7</a>
+                <a href="#">8</a>
+                <a href="#">9</a>
+                <a href="#" class="rightmost">*</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">6</a>
+                <a href="#" class="rightmost">-</a>
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#" class="rightmost">+</a>
+                <a href="#" class="gridcolumn2">0</a>
+                <a href="#">.</a>
+                <a href="#" class="rightmost">=</a>
+            </main>
+        </div>
+        <script>
+            let stack = [];
+
+            // used for accumulate numbers on screen
+            let numbers = "";
+
+            let btns = document.querySelectorAll("a");
+            btns.forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                    
+                    // Get cur button text
+                    let text = e.target.innerText;
+                    if (isNumber(text)) {
+                        // Only allow 9 numbers to avoid overflow on the screen;
+                        if (numbers.length > 9) {
+                            return;
+                        }
+                        
+                        // Avoid "03223" appear on the screen;
+                        if (numbers === "" && text === "0") {
+                            return;
+                        }
+
+                        // Accumulate and display numbers;
+                        numbers += text;
+                        display(numbers);
+
+                    } else {
+                        numbers = "";
+
+                        let screen = document.querySelector("p");
+                        stack.push(screen.innerText);
+
+                        if (text === "+" || text === "-") {
+                            let res = evaluate(stack);
+                            display(res);
+                            // Push back result for further caculation.
+                            stack.push(res);
+                            stack.push(text);
+                        }
+
+                        if (text === "=") {
+                            let res = evaluate(stack);
+                            display(res);
+                        }
+
+                        if (text === "AC") {
+                            stack = [];
+                            display("0");
+                        }
+                    }
+                })
+            })
+
+            let display = function(str) {
+                let screen = document.querySelector("p");
+                screen.innerText = str;
+            }
+
+            let evaluate = function(stack) {
+                let res = 0;
+                let sign = 1;
+                while (stack.length != 0) {
+                    let cur = stack.shift();
+                    if (isNumber(cur)) {
+                        res += parseInt(cur) * sign;
+                    } else {
+                        if (cur === "-") {
+                            sign = -1;
+                        } else {
+                            sign = 1;
+                        }
+                    }
+                }
+
+                return "" + res + "";
+            }
+
+            let isNumber = function(str) {
+                let num = parseInt(str);
+                return !Number.isNaN(num);
+            }
+        </script>
+    </body>     
+</html>
