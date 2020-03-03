@@ -167,7 +167,7 @@
       </a>
     </section>
   </div>
-  
+
   <!-- Links -->
   <section class="links">
     <div class="links-inner">
@@ -250,6 +250,13 @@
       </ul>
     </div>
   </footer>
+  <script>
+    let menubtn = document.querySelector(".menu-btn");
+    let menu = document.querySelector(".main-menu");
+    menubtn.addEventListener("click", (e)=> {
+      menu.classList.toggle("show");
+    })
+  </script>
 </body>
 
 </html>

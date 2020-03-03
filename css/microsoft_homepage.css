@@ -131,14 +131,149 @@ a {
     padding: 50px 0 0 30px;
 }
 
-.xbox .content p {
+.xbox p, .content p { 
     margin: 10px 0 25px 0;
 }
 
 /* https://codepen.io/bradtraversy/pen/ZEGGNRb */
 
+
+.carbon .content{
+    width: 55%;
+    padding: 100px 0 0 30px;
+    color: #fff;
+}
+
+.carbon {
+    width: 100%;
+    height: 350px;
+    background: url('https://i.ibb.co/72cgtsz/carbon.jpg') no-repeat center center/cover;
+    margin-bottom: 20px;
+}
+
+.follow {
+    display: flex;
+    align-items: center;
+}
+
+.follow a {
+    margin-left: 20px;
+}
+
+.links {
+    margin-top: 20px;
+    padding-top: 20px;
+    background: #f2f2f2;
+}
+
+.links li {
+    list-style: none;
+    margin-bottom: 10px;
+    color: #616161;
+}
+
+.links li a {
+    font-size: 13px;
+    color:#616161;
+}
+
+.links li a:hover{
+    border-bottom: 2px solid #000;
+}
+
+.links .links-inner{
+    width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.links .links-inner ul {
+    width: 100%;
+    margin-left: 20px;
+}
+
+.footer {
+    background: #f2f2f2;
+}
+
+.footer-inner {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    align-items: flex-end;
+    font-size: 13px;
+    padding: 40px 0;
+}
+
+.footer-inner div {
+    width: 20%;
+    color:#616161;
+    margin-left: 20px;
+}
+
+.footer-inner ul {
+    display: flex;
+    margin-left: 50px;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.footer-inner ul li {
+    list-style: none;
+}
+
+.footer-inner a {
+    color:#616161;
+}
+
 @media(max-width: 600px) {
+
+    .right-menu {
+        margin-right: 20px;
+    }
+
     .menu-btn {
+        width: 80%;
         display: block;
+        margin: auto;
+    }
+
+    .menu-btn i {
+        float: right;
+        margin-top: 15px;
+    }
+
+    .main-nav ul.main-menu {
+        display: block;
+        position: absolute;
+        top:0;
+        left: 0;
+        background: #f2f2f2;
+        width: 50%;
+        height: 100%;
+        border-right: #ccc 1px solid;
+        opacity: 0.9;
+        padding: 30px;
+        transform: translateX(-500px);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .main-nav ul.main-menu.show{
+        transform: translateX(0px);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .main-nav ul.main-menu li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .main-nav ul li:last-child {
+        border-bottom: none;
+    }
+
+    .menu-btn {
+        cursor: pointer;
     }
 }
