@@ -9,6 +9,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://kit.fontawesome.com/7c702f6c7f.js" crossorigin="anonymous"></script>
     <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <style id="common">
         @font-face {
@@ -106,7 +107,20 @@
     </style>
     
     <style>.self_asserted_container .row .panel-default{padding:20px 30px;margin:auto;min-width:400px}.self_asserted_container .row .panel-default .panel-body{margin:20px auto;max-width:380px;width:auto;padding:0}.self_asserted_container .row .panel-default .panel-body img.companyLogo{display:block;height:70px;margin-top:1rem}.self_asserted_container .row .panel-default .panel-body .branding h1{font-size:1.5em;color:#505050}.self_asserted_container .row .panel-default .panel-body h3{font-size:1.5em;color:#505050;margin-top:5px;margin-bottom:30px}.self_asserted_container .row .panel-default .panel-body .intro{display:none;text-align:left}.self_asserted_container .row .panel-default .panel-body .intro p{padding-top:9rem}.self_asserted_container .row .panel-default .panel-body #api #attributeVerification .pageLevel{color:#b00;text-align:left;margin-bottom:-10px}.self_asserted_container .row .panel-default .panel-body #api #attributeVerification .error{color:#b00;text-align:left;margin-top:10px}.errorText{border:none;padding:0;background:0 0;color:#a61e0c}.self_asserted_container .row .panel-default .panel-body #api .verifying-modal{display:none;margin-top:10px}#attributeVerification #attributeList ul{display:flex;flex-direction:column}#attributeVerification #attributeList ul li button#email_ver_but_verify.verifyButton{margin-left:0;margin-bottom:-2rem}#attributeVerification #attributeList ul li input{margin-top:1rem;width:100%;box-shadow:none;padding:unset}#attributeVerification #attributeList ul li input::-webkit-input-placeholder{direction:rtl;text-align:left}#attributeVerification #attributeList ul li .helpText{display:none;color:#a61e0c;text-align:justify}#attributeVerification #attributeList ul li #email_info.verificationInfoText,#attributeVerification #attributeList ul li #email_success.verificationSuccessText,#attributeVerification #attributeList ul li .attrEntry.validate #email_fail_retry,#attributeVerification #attributeList ul li p{float:left}#attributeVerification #attributeList ul li .attrEntry.validate #email_fail_server{float:left;text-align:left}#attributeVerification #attributeList ul li #email_fail_no_retry,div#email_intro{float:left}div#email_info{text-align:left}#attributeVerification #attributeList ul li input[type=radio],#attributeVerification #attributeList ul li input[type=checkbox]{width:20px!important;box-shadow:none;height:20px;display:inline-block;float:left;clear:left;margin:.5rem}#attributeList ul li input[type=radio]+label,#attributeVerification #attributeList ul li input[type=checkbox]+label{float:left;display:inline-block!important;margin:.5rem;font-weight:400}#attributeVerification #attributeList ul li input[type=checkbox]{position:relative;width:24px;height:24px;font-size:20px;margin:.4rem;display:inline-block;border:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:0;text-indent:0}#attributeVerification #attributeList ul li input[type=checkbox]:after{content:'';position:absolute;display:block;z-index:1;width:24px;height:24px;border:1px solid #dedede;border-radius:2px}#attributeVerification #attributeList ul li input[type=checkbox]:before{background:3px 4px no-repeat #00f;background-size:10px 8px;position:absolute;left:2px;z-index:2;opacity:0;width:100%;height:100%;color:#f6ac4f}#attributeVerification #attributeList ul li input[type=checkbox]:checked:after{content:'\2713';position:absolute;box-sizing:border-box;padding-left:4px;line-height:23px;color:#fff;background-color:#296ec6;top:0;opacity:1;left:0;border:1px solid #296ec6;border-radius:2px}#attributeVerification #attributeList ul li input[type=radio]{-webkit-appearance:none;appearance:none;width:20px;height:20px;border:1px solid #dedede;border-radius:50%;background-color:#fff;outline:0}#attributeVerification #attributeList ul li input[type=radio]:checked{background-color:#296ec6;border:1px solid #296ec6}</style>
+    <style>
+        .Password .attrEntry .error.show{
+            display: none;
+        }
 
+        .Password .attrEntry ul li .fail{
+            color: red;
+        }
+
+        .Password .attrEntry ul li .pass{
+            color: green;
+        }
+
+    </style>
 </head>
 <body>
     <img data-tenant-branding-background="true" src="https://stevenzhou.b2clogin.com/static/tenant/templates/backgrounds/4-2.png" />
@@ -124,6 +138,159 @@
             </div>
         </div>
     </div>
-    <script>alert("123");</script>
+    <script>
+
+        // Create and insert DOMs
+        let passwordCheckContainer = document.createElement("ul");
+        let iEl = document.createElement("i");
+        iEl.classList.add("fas");
+        iEl.classList.add("fa-ban");
+
+        let numberCheckEl = document.createElement("li");
+        numberCheckEl.classList.add("number_error");
+        numberCheckEl.classList.add("fail");
+        let numberText = document.createElement("span");
+        numberText.innerText = "The password must have at least a number.";
+        numberCheckEl.appendChild(iEl);
+        numberCheckEl.append(numberText)
+
+        let lowerCheckEl = document.createElement("li");
+        lowerCheckEl.classList.add("lower_error");
+        lowerCheckEl.classList.add("fail");
+        let lowerText = document.createElement("span");
+        lowerText.innerText = "The password must have at least a lower case character.";
+        lowerCheckEl.appendChild(iEl);
+        lowerCheckEl.appendChild(lowerText);
+        
+
+        let upperCheckEl = document.createElement("li");
+        upperCheckEl.classList.add("upper_error");
+        upperCheckEl.classList.add("fail");
+        let upperText = document.createElement("span");
+        upperCheckEl.innerText = "The password must have at least a upper case character.";
+        upperCheckEl.appendChild(iEl);
+        upperCheckEl.appendChild(upperText);
+
+        let lengthCheckEl = document.createElement("li");
+        lengthCheckEl.classList.add("length_error");
+        lengthCheckEl.classList.add("fail");
+        let lengthText = document.createElement("span");
+        lengthText.innerText = "The password must be between 8 and 64 characters.";
+        lengthCheckEl.appendChild(iEl);
+        lengthCheckEl.appendChild(lengthText);
+        
+        passwordCheckContainer.appendChild(numberCheckEl);
+        passwordCheckContainer.appendChild(lowerCheckEl);
+        passwordCheckContainer.appendChild(upperCheckEl);
+        passwordCheckContainer.appendChild(lengthCheckEl);
+        
+        let newPassowrdInputEl = document.querySelector("#newPassword");
+        let reenterPassowrdInputEl = document.querySelector("#reenterPassword");
+        newPassowrdInputEl.parentElement.appendChild(passwordCheckContainer);
+        reenterPassowrdInputEl.parentElement.appendChild(passwordCheckContainer);
+
+        // Define regex rules
+        let numberReg = new RegExp(/\d+/);
+        let lowerReg = new RegExp(/[a-z]+/);
+        let upperReg = new RegExp(/[A-Z]+/);
+        let lengthReg = new RegExp(/\w{8,64}/);
+
+        // Init the validation boolean values to false 
+        let validateMap = {
+            "length_validated": false,
+            "number_validated": false,
+            "lower_validated": false,
+            "upper_validated": false
+        };
+        let attributeListEl = document.querySelector("#attributeList");
+        attributeListEl.addEventListener("input", (e)=>{
+            if (e.target.id != "newPassword" && e.target.id != "reenterPassword") {
+                return;
+            } 
+
+            let val = e.target.value;
+            let lengthCheckEl = e.target.parentElement.lastElementChild.querySelector(".length_check");
+            let numberCheckEl = e.target.parentElement.lastElementChild.querySelector(".number_check");
+            let lowerCheckEl = e.target.parentElement.lastElementChild.querySelector(".lower_check");
+            let upperCheckEl = e.target.parentElement.lastElementChild.querySelector(".upper_check");
+
+            if(lengthReg.test(val)) {
+                lengthCheckEl.classList.remove("fail");
+                lengthCheckEl.classList.add("pass");
+                lengthCheckEl.firstElementChild.classList.remove("fa-ban");
+                lengthCheckEl.firstElementChild.classList.add("fa-check-circle");
+                validateMap["length_validated"] = true;
+            } else {
+                lengthCheckEl.classList.remove("pass")
+                lengthCheckEl.classList.add("fail");
+                lengthCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                lengthCheckEl.firstElementChild.classList.add("fa-ban");
+                validateMap["length_validated"] = false;
+            }
+
+            if(numberReg.test(val)) {
+                numberCheckEl.classList.remove("fail");
+                numberCheckEl.classList.add("pass");
+                numberCheckEl.firstElementChild.classList.remove("fa-ban");
+                numberCheckEl.firstElementChild.classList.add("fa-check-circle");
+                validateMap["number_validated"] = true;
+            } else {
+                numberCheckEl.classList.remove("pass");
+                numberCheckEl.classList.add("fail");
+                numberCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                numberCheckEl.firstElementChild.classList.add("fa-ban");
+                validateMap["number_validated"] = false;
+            }
+
+            if(lowerReg.test(val)) {
+                lowerCheckEl.classList.remove("fail");
+                lowerCheckEl.classList.add("pass");
+                lowerCheckEl.firstElementChild.classList.remove("fa-ban");
+                lowerCheckEl.firstElementChild.classList.add("fa-check-circle");
+                validateMap["lower_validated"] = true;
+            } else {
+                lowerCheckEl.classList.remove("pass");
+                lowerCheckEl.classList.add("fail");
+                lowerCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                lowerCheckEl.firstElementChild.classList.add("fa-ban");
+                validateMap["lower_validated"] = false;
+            }
+
+            if(upperReg.test(val)) {
+                upperCheckEl.classList.remove("fail");
+                upperCheckEl.classList.add("pass");
+                upperCheckEl.firstElementChild.classList.remove("fa-ban");
+                upperCheckEl.firstElementChild.classList.add("fa-check-circle");
+                validateMap["upper_validated"] = true;
+            } else {
+                upperCheckEl.classList.remove("pass");
+                upperCheckEl.classList.add("fail");
+                upperCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                upperCheckEl.firstElementChild.classList.add("fa-ban");
+                validateMap["upper_validated"] = false;
+            }
+        })
+
+        // Clear the default event listener and set up a new one
+        let continueBtn = document.removeEventListener("click");
+        continueBtn.addEventListener("click", (e)=> {
+
+            let validateVals = Object.val(validateMap);
+            // Check if any validation has not passed.
+            let res = validateVals.filter((val) => {
+                if (!val) {
+                    return true;
+                }
+            })
+
+            if (res.length > 0) {
+                // Un passed validation exists.
+                return;
+            } else {
+                // all validation pass
+                // $element.verify();
+            }
+        })
+    </script>
 </body>
 </html>
