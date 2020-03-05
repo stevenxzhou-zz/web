@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/7c702f6c7f.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progressive Password Validation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .fail {
+            color: red;
+        }
+        .pass {
+            color: green;
+        }
+        ul {
+            margin-top: 10px;
+        }
+        ul li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <label>Passwrod</label>
+    <input type="password"></input>
+    <ul>
+        <li class="number_check fail">
+            <i class="fas fa-ban"></i>
+            <span>Password must only contain numbers.</span>
+        </li>
+        <li class="length_check fail">
+            <i class="fas fa-ban"></i>
+            <span>Password must be within 5-10 characters.</span>
+        </li>
+    </ul>
+    <script>
+        let lengthReg = new RegExp(/\d{5,10}/);
+        let numberReg = new RegExp(/\d/);
+        let inputEl = document.querySelector("input");
+        let lengthCheckEl = document.querySelector(".length_check");
+        let numberCheckEl = document.querySelector(".number_check");
+        inputEl.addEventListener("input", (e)=>{
+            let val = e.target.value;
+            if(lengthReg.test(val)) {
+                lengthCheckEl.classList.remove("fail");
+                lengthCheckEl.classList.add("pass");
+                lengthCheckEl.firstElementChild.classList.remove("fa-ban");
+                lengthCheckEl.firstElementChild.classList.add("fa-check-circle");
+            } else {
+                lengthCheckEl.classList.remove("pass")
+                lengthCheckEl.classList.add("fail");
+                lengthCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                lengthCheckEl.firstElementChild.classList.add("fa-ban");
+            }
+
+            if(numberReg.test(val)) {
+                numberCheckEl.classList.remove("fail");
+                numberCheckEl.classList.add("pass");
+                numberCheckEl.firstElementChild.classList.remove("fa-ban");
+                numberCheckEl.firstElementChild.classList.add("fa-check-circle");
+            } else {
+                numberCheckEl.classList.remove("pass");
+                numberCheckEl.classList.add("fail");
+                numberCheckEl.firstElementChild.classList.remove("fa-check-circle");
+                numberCheckEl.firstElementChild.classList.add("fa-ban");
+            }
+        })
+    </script>
+</body>
+</html>
