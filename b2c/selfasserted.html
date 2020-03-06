@@ -112,11 +112,20 @@
             display: none;
         }
 
-        .Password .attrEntry ul li .fail{
+        .Password .attrEntry ul li {
+            text-align: left;
+            margin: 3px !important;           
+        }
+
+        .Password .attrEntry ul li span{
+            margin-left: 10px;         
+        }
+
+        .Password .attrEntry ul li.fail{
             color: red;
         }
 
-        .Password .attrEntry ul li .pass{
+        .Password .attrEntry ul li.pass{
             color: green;
         }
 
@@ -147,36 +156,36 @@
         iEl.classList.add("fa-ban");
 
         let numberCheckEl = document.createElement("li");
-        numberCheckEl.classList.add("number_error");
+        numberCheckEl.classList.add("number_check");
         numberCheckEl.classList.add("fail");
         let numberText = document.createElement("span");
         numberText.innerText = "The password must have at least a number.";
-        numberCheckEl.appendChild(iEl);
+        numberCheckEl.appendChild(iEl.cloneNode(true));
         numberCheckEl.append(numberText)
 
         let lowerCheckEl = document.createElement("li");
-        lowerCheckEl.classList.add("lower_error");
+        lowerCheckEl.classList.add("lower_check");
         lowerCheckEl.classList.add("fail");
         let lowerText = document.createElement("span");
         lowerText.innerText = "The password must have at least a lower case character.";
-        lowerCheckEl.appendChild(iEl);
+        lowerCheckEl.appendChild(iEl.cloneNode(true));
         lowerCheckEl.appendChild(lowerText);
         
 
         let upperCheckEl = document.createElement("li");
-        upperCheckEl.classList.add("upper_error");
+        upperCheckEl.classList.add("upper_check");
         upperCheckEl.classList.add("fail");
         let upperText = document.createElement("span");
-        upperCheckEl.innerText = "The password must have at least a upper case character.";
-        upperCheckEl.appendChild(iEl);
+        upperText.innerText = "The password must have at least a upper case character.";
+        upperCheckEl.appendChild(iEl.cloneNode(true));
         upperCheckEl.appendChild(upperText);
 
         let lengthCheckEl = document.createElement("li");
-        lengthCheckEl.classList.add("length_error");
+        lengthCheckEl.classList.add("length_check");
         lengthCheckEl.classList.add("fail");
         let lengthText = document.createElement("span");
         lengthText.innerText = "The password must be between 8 and 64 characters.";
-        lengthCheckEl.appendChild(iEl);
+        lengthCheckEl.appendChild(iEl.cloneNode(true));
         lengthCheckEl.appendChild(lengthText);
         
         passwordCheckContainer.appendChild(numberCheckEl);
@@ -184,10 +193,10 @@
         passwordCheckContainer.appendChild(upperCheckEl);
         passwordCheckContainer.appendChild(lengthCheckEl);
         
-        let newPassowrdInputEl = document.querySelector("#newPassword");
-        let reenterPassowrdInputEl = document.querySelector("#reenterPassword");
-        newPassowrdInputEl.parentElement.appendChild(passwordCheckContainer);
-        reenterPassowrdInputEl.parentElement.appendChild(passwordCheckContainer);
+        let newPassowrdInputEl = document.getElementById("newPassword");
+        let reenterPassowrdInputEl = document.getElementById("reenterPassword");
+        newPassowrdInputEl.parentElement.appendChild(passwordCheckContainer.cloneNode(true));
+        reenterPassowrdInputEl.parentElement.appendChild(passwordCheckContainer.cloneNode(true));
 
         // Define regex rules
         let numberReg = new RegExp(/\d+/);
@@ -272,10 +281,15 @@
         })
 
         // Clear the default event listener and set up a new one
-        let continueBtn = document.removeEventListener("click");
-        continueBtn.addEventListener("click", (e)=> {
+        let continueBtn = document.querySelector("#continue");
+        let continueBtnNew = document.createElement("button");
+        continueBtnNew.setAttribute("id", "continue");
+        continueBtnNew.innerText="Create";
+        continueBtn.replaceWith(continueBtnNew);
 
-            let validateVals = Object.val(validateMap);
+        continueBtnNew.addEventListener("click", (e)=> {
+
+            let validateVals = Object.values(validateMap);
             // Check if any validation has not passed.
             let res = validateVals.filter((val) => {
                 if (!val) {
@@ -288,7 +302,7 @@
                 return;
             } else {
                 // all validation pass
-                // $element.verify();
+                $element.verify();
             }
         })
     </script>
