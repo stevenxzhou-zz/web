@@ -141,6 +141,148 @@
                     <div class="panel-body">
                         <img alt="Company Logo" class="companyLogo" data-tenant-branding-logo="true" src="https://stevenzhou.b2clogin.com/static/tenant/templates/images/logo.svg">
                         <div id="api">
+                            <div id="attributeVerification" role="form">
+                                <div class="error pageLevel" id="passwordEntryMismatch" style="display: none;" aria-hidden="true">The password entry fields do not match. Please enter the same password in both fields and try again.</div>
+                                <div class="error pageLevel" id="requiredFieldMissing" style="display: none;" aria-hidden="true">A required field is missing. Please fill out all required fields and try again.</div>
+                                <div class="error pageLevel" id="fieldIncorrect" style="display: none;" aria-hidden="true">One or more fields are filled out incorrectly. Please check your entries and try again.</div>
+                                <div class="error pageLevel" id="claimVerificationServerError" style="display: none;" aria-hidden="true"></div>
+                                <div class="attr" id="attributeList">
+                                  <ul>
+                                    <li class="TextBox">
+                                      <div class="attrEntry">
+                                        <div>
+                                          <div class="verificationInfoText" id="email_intro" style="display:none" aria-hidden="true"></div>
+                                          <div class="verificationInfoText" id="email_info" style="display:none" aria-hidden="true"></div>
+                                          <div class="verificationSuccessText" id="email_success" style="display:none" aria-hidden="true"></div>
+                                          <div class="verificationErrorText error" id="email_fail_retry" style="display:none" aria-hidden="true">That code is incorrect. Please try again.</div>
+                                          <div class="verificationErrorText error" id="email_fail_no_retry" style="display:none" aria-hidden="true">You've made too many incorrect attempts. Please try again later.</div>
+                                          <div class="verificationErrorText error" id="email_fail_throttled" style="display:none" aria-hidden="true">There have been too many requests to verify this email address. Please wait a while, then try again.</div>
+                                          <div class="verificationErrorText error" id="email_fail_code_expired" style="display:none" aria-hidden="true">That code is expired. Please request a new code.</div>
+                                          <div class="verificationErrorText error" id="email_fail_server" style="display:none" aria-hidden="true">We are having trouble verifying your email address. Please enter a valid email address and try again.</div>
+                                          <div class="verificationErrorText error" id="email_incorrect_format" style="display:none" aria-hidden="true"></div>
+                                        </div>
+                          
+                                        <label for="email">Email Address</label>
+                          
+                                        <div class="error itemLevel" aria-hidden="true"><p>Please enter a valid email address.</p></div>
+                          
+                          
+                                        <input id="email" class="textInput" type="text" placeholder="Email Address" pattern="^[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+(?:\.[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" title="Email address that can be used to contact you." required="" aria-required="true" aria-label="Please enter a valid email address., Email Address">
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                        <a href="javascript:void(0)" data-help="Email address that can be used to contact you." class="helpLink tiny">What is this?</a>
+                          
+                                        <div class="buttons verify" claim_id="email">
+                                          <div id="email_success_screenreader_msg" aria-label="E-mail address verified. You can now continue."></div>
+                                          <div id="email_ver_wait" class="working"></div>
+                                          <label id="email_ver_input_label" for="email_ver_input">Verification code</label>
+                                          <input id="email_ver_input" class="verifyInput" type="text" placeholder="Verification code" style="display:none">
+                                          <button id="email_ver_but_send" class="sendButton" type="button" style="display:none" aria-label="Send verification code">Send verification code</button>
+                                          <button id="email_ver_but_verify" class="verifyButton" type="button" style="display:none" aria-label="Verify code">Verify code</button>
+                                          <button id="email_ver_but_resend" class="sendButton" type="button" style="display:none" aria-label="Send new code">Send new code</button>
+                          
+                                          <button id="email_ver_but_edit" class="editButton" type="button" style="display:none" aria-label="Change e-mail">Change e-mail</button>
+                          
+                                          <button id="email_ver_but_default" class="defaultButton" type="button" style="display:none" aria-label="Default">Default</button>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li class="Password">
+                                      <div class="attrEntry">
+                          
+                                        <label for="newPassword">New Password</label>
+                          
+                                        <div class="error itemLevel" aria-hidden="true"><p>This information is required.</p></div>
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                        <input id="newPassword" class="textInput" type="password" placeholder="New Password" title="Enter new password" required="" aria-required="true" aria-label="The password must be between 8 and 64 characters., Your password must have at least 3 of the following:, a lowercase letter, an uppercase letter, a number, a symbol, New Password" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                          
+                                        <a href="javascript:void(0)" data-help="Enter new password" class="helpLink tiny">What is this?</a>
+                                      </div>
+                                    </li>
+                                    <li class="Password">
+                                      <div class="attrEntry">
+                          
+                                        <label for="reenterPassword">Confirm New Password</label>
+                          
+                                        <div class="error itemLevel" aria-hidden="true"><p>This information is required.</p></div>
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                        <input id="reenterPassword" class="textInput" type="password" placeholder="Confirm New Password" title="Confirm new password" required="" aria-required="true" aria-label="The password must be between 8 and 64 characters., Your password must have at least 3 of the following:, a lowercase letter, an uppercase letter, a number, a symbol, Confirm New Password" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                          
+                                        <a href="javascript:void(0)" data-help="Confirm new password" class="helpLink tiny">What is this?</a>
+                                    </li>
+                                    <li class="TextBox">
+                                      <div class="attrEntry">
+                          
+                                        <label for="city">City</label>
+                          
+                                        <div class="error itemLevel" aria-hidden="true"><p></p></div>
+                          
+                          
+                                        <input id="city" class="textInput" type="text" placeholder="City" title="The city in which you are located." aria-label=", City">
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                        <a href="javascript:void(0)" data-help="The city in which you are located." class="helpLink tiny">What is this?</a>
+                                      </div>
+                                    </li>
+                                    <li class="TextBox">
+                                      <div class="attrEntry">
+                          
+                                        <label for="givenName">Given Name</label>
+                          
+                                        <div class="error itemLevel" aria-hidden="true"><p></p></div>
+                          
+                          
+                                        <input id="givenName" class="textInput" type="text" placeholder="Given Name" title="Your given name (also known as first name)." aria-label=", Given Name">
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                        <a href="javascript:void(0)" data-help="Your given name (also known as first name)." class="helpLink tiny">What is this?</a>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="buttons">
+                                  <button id="continue" disabled="disabled" aria-label="Create">Create</button>
+                                  <button id="cancel" aria-label="Cancel" formnovalidate="">Cancel</button>
+                                </div>
+                          
+                                <div class="verifying-modal">
+                                  <div id="verifying_blurb"></div>
+                                </div>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -202,14 +344,22 @@
         let numberReg = new RegExp(/\d+/);
         let lowerReg = new RegExp(/[a-z]+/);
         let upperReg = new RegExp(/[A-Z]+/);
-        let lengthReg = new RegExp(/\w{8,64}/);
+        let lengthReg = new RegExp(/^\w{8,64}$/, "s");
 
         // Init the validation boolean values to false 
         let validateMap = {
-            "length_validated": false,
-            "number_validated": false,
-            "lower_validated": false,
-            "upper_validated": false
+            "newPassword": {
+                "length_validated": false,
+                "number_validated": false,
+                "lower_validated": false,
+                "upper_validated": false
+            },
+            "reenterPassword": {
+                "length_validated": false,
+                "number_validated": false,
+                "lower_validated": false,
+                "upper_validated": false
+            }
         };
         let attributeListEl = document.querySelector("#attributeList");
         attributeListEl.addEventListener("input", (e)=>{
@@ -228,13 +378,13 @@
                 lengthCheckEl.classList.add("pass");
                 lengthCheckEl.firstElementChild.classList.remove("fa-ban");
                 lengthCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap["length_validated"] = true;
+                validateMap[e.target.id]["length_validated"] = true;
             } else {
                 lengthCheckEl.classList.remove("pass")
                 lengthCheckEl.classList.add("fail");
                 lengthCheckEl.firstElementChild.classList.remove("fa-check-circle");
                 lengthCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap["length_validated"] = false;
+                validateMap[e.target.id]["length_validated"] = false;
             }
 
             if(numberReg.test(val)) {
@@ -242,13 +392,13 @@
                 numberCheckEl.classList.add("pass");
                 numberCheckEl.firstElementChild.classList.remove("fa-ban");
                 numberCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap["number_validated"] = true;
+                validateMap[e.target.id]["number_validated"] = true;
             } else {
                 numberCheckEl.classList.remove("pass");
                 numberCheckEl.classList.add("fail");
                 numberCheckEl.firstElementChild.classList.remove("fa-check-circle");
                 numberCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap["number_validated"] = false;
+                validateMap[e.target.id]["number_validated"] = false;
             }
 
             if(lowerReg.test(val)) {
@@ -256,13 +406,13 @@
                 lowerCheckEl.classList.add("pass");
                 lowerCheckEl.firstElementChild.classList.remove("fa-ban");
                 lowerCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap["lower_validated"] = true;
+                validateMap[e.target.id]["lower_validated"] = true;
             } else {
                 lowerCheckEl.classList.remove("pass");
                 lowerCheckEl.classList.add("fail");
                 lowerCheckEl.firstElementChild.classList.remove("fa-check-circle");
                 lowerCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap["lower_validated"] = false;
+                validateMap[e.target.id]["lower_validated"] = false;
             }
 
             if(upperReg.test(val)) {
@@ -270,13 +420,13 @@
                 upperCheckEl.classList.add("pass");
                 upperCheckEl.firstElementChild.classList.remove("fa-ban");
                 upperCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap["upper_validated"] = true;
+                validateMap[e.target.id]["upper_validated"] = true;
             } else {
                 upperCheckEl.classList.remove("pass");
                 upperCheckEl.classList.add("fail");
                 upperCheckEl.firstElementChild.classList.remove("fa-check-circle");
                 upperCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap["upper_validated"] = false;
+                validateMap[e.target.id]["upper_validated"] = false;
             }
         })
 
@@ -289,15 +439,22 @@
 
         continueBtnNew.addEventListener("click", (e)=> {
 
-            let validateVals = Object.values(validateMap);
+            let newPasswordValidateVals = Object.values(validateMap["newPassword"]);
+            let reenterPasswordValidateVals = Object.values(validateMap["reenterPassword"]);
             // Check if any validation has not passed.
-            let res = validateVals.filter((val) => {
+            let newPasswordValidateRes = newPasswordValidateVals.filter((val) => {
                 if (!val) {
                     return true;
                 }
             })
 
-            if (res.length > 0) {
+            let reenterPasswordValidateRes = reenterPasswordValidateVals.filter((val) => {
+                if (!val) {
+                    return true;
+                }
+            })
+
+            if (res.length > 0 || reenterPasswordValidateRes.length > 0) {
                 // Un passed validation exists.
                 return;
             } else {
