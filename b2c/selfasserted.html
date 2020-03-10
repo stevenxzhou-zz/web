@@ -213,7 +213,8 @@
         // Define regex rules
         let whiteReg = new RegExp(/^(\S.*\S$)|(^\S+$)|(^$)/);
         let lengthReg = new RegExp(/^(.){8,64}$/);
-        let miscReg = new RegExp(/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~&quot;();!]|\.(?!@))$/);
+        let miscReg = new RegExp(/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?\/`~&quot;();!]|\.(?!@))+$/);
+
 
         // Init the validation boolean values to false 
         let validateMap = {
