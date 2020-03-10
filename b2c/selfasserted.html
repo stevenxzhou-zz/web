@@ -149,53 +149,60 @@
     </div>
     <script>
 
-        // TODOs
-        // 1. The length validation contains symbols regex and some other validatoins. Need to be separated and provide correspondent validation message. 
-        // 2. Localization needs to setup by linking with the location string passed from the server. 
-        // 3. Reduce code redundency. 
+        // Create Dom for showing check message.
+        let createErrorElement = function(className, errorMsg) {
+          let iEl = document.createElement("i");
+          iEl.classList.add("fas");
+          iEl.classList.add("fa-ban");
 
-        // Create and insert DOMs
+          let CheckEl = document.createElement("li");
+          checkEl.classList.add(className);
+          checkEl.classList.add("fail");
+          let textEl = document.createElement("span");
+          textEl.innerText = errorMsg;
+          checkEl.appendChild(iEl);
+          checkEl.append(textEl);
+
+          return checkEl
+        };
+
+        // Update the check message.
+        let updateCheck = function(validateId, validateKey, checkEl, regExp, val) {
+          if(regExp.test(val)) {
+                checkEl.classList.remove("fail");
+                checkEl.classList.add("pass");
+                checkEl.firstElementChild.classList.remove("fa-ban");
+                checkEl.firstElementChild.classList.add("fa-check-circle");
+                validateMap[validateId][validateKey] = true;
+            } else {
+                checkEl.classList.remove("pass")
+                checkEl.classList.add("fail");
+                checkEl.firstElementChild.classList.remove("fa-check-circle");
+                checkEl.firstElementChild.classList.add("fa-ban");
+                validateMap[validateId][validateKey] = false;
+            }
+        }
+
+        // Check if an array of boolean all true
+        let isAllChecked = function(booleanArray) {
+          let res = booleanArray.filter((val) => {
+              if (!val) {
+                  return true;
+              }
+          })
+
+          return res.length === 0;
+        }
+
+        // Create and attach the new created DOM to the UI.
+        let passwordField = $element.findBy(SA_FIELDS.AttributeFields, "ID", "newPassword");
+        let whiteSpaceEl = createErrorElement("white_check", passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[0].PREDICATES[0].HELP_TEXT);
+        let lengthCheckEl = createErrorElement("length_check", passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[2].PREDICATES[0].HELP_TEXT);
+        let miscCheckEl = createErrorElement("misc_check", passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[3].HELP_TEXT + passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[3].PREDICATES[0].HELP_TEXT + "," + passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[3].PREDICATES[1].HELP_TEXT + "," + passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[3].PREDICATES[2].HELP_TEXT + "," + passwordField.INPUT_VALIDATION.PREDICATE_GROUPS[3].PREDICATES[3].HELP_TEXT);
+        
         let passwordCheckContainer = document.createElement("ul");
-        let iEl = document.createElement("i");
-        iEl.classList.add("fas");
-        iEl.classList.add("fa-ban");
-
-        let numberCheckEl = document.createElement("li");
-        numberCheckEl.classList.add("number_check");
-        numberCheckEl.classList.add("fail");
-        let numberText = document.createElement("span");
-        numberText.innerText = "The password must have at least a number.";
-        numberCheckEl.appendChild(iEl.cloneNode(true));
-        numberCheckEl.append(numberText)
-
-        let lowerCheckEl = document.createElement("li");
-        lowerCheckEl.classList.add("lower_check");
-        lowerCheckEl.classList.add("fail");
-        let lowerText = document.createElement("span");
-        lowerText.innerText = "The password must have at least a lower case character.";
-        lowerCheckEl.appendChild(iEl.cloneNode(true));
-        lowerCheckEl.appendChild(lowerText);
-        
-
-        let upperCheckEl = document.createElement("li");
-        upperCheckEl.classList.add("upper_check");
-        upperCheckEl.classList.add("fail");
-        let upperText = document.createElement("span");
-        upperText.innerText = "The password must have at least a upper case character.";
-        upperCheckEl.appendChild(iEl.cloneNode(true));
-        upperCheckEl.appendChild(upperText);
-
-        let lengthCheckEl = document.createElement("li");
-        lengthCheckEl.classList.add("length_check");
-        lengthCheckEl.classList.add("fail");
-        let lengthText = document.createElement("span");
-        lengthText.innerText = "The password must be between 8 and 64 characters.";
-        lengthCheckEl.appendChild(iEl.cloneNode(true));
-        lengthCheckEl.appendChild(lengthText);
-        
-        passwordCheckContainer.appendChild(numberCheckEl);
-        passwordCheckContainer.appendChild(lowerCheckEl);
-        passwordCheckContainer.appendChild(upperCheckEl);
+        passwordCheckContainer.appendChild(whiteSpaceEl);
+        passwordCheckContainer.appendChild(miscCheckEl);
         passwordCheckContainer.appendChild(lengthCheckEl);
         
         let newPassowrdInputEl = document.getElementById("newPassword");
@@ -204,126 +211,59 @@
         reenterPassowrdInputEl.parentElement.appendChild(passwordCheckContainer.cloneNode(true));
 
         // Define regex rules
-        let numberReg = new RegExp(/\d+/);
-        let lowerReg = new RegExp(/[a-z]+/);
-        let upperReg = new RegExp(/[A-Z]+/);
-        let lengthReg = new RegExp(/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~&quot;();!]|\.(?!@)){8,64}$/);
+        let whiteReg = new RegExp(/^(\S.*\S$)|(^\S+$)|(^$)/);
+        let lengthReg = new RegExp(/^(.){8,64}$/);
+        let miscReg = new RegExp(/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9])|(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]))([A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~&quot;();!]|\.(?!@))$/);
 
         // Init the validation boolean values to false 
         let validateMap = {
             "newPassword": {
-                "length_validated": false,
-                "number_validated": false,
-                "lower_validated": false,
-                "upper_validated": false
+                "white_check": false,
+                "length_check": false,
+                "misc_check": false
             },
             "reenterPassword": {
-                "length_validated": false,
-                "number_validated": false,
-                "lower_validated": false,
-                "upper_validated": false
+                "white_check": false,
+                "length_check": false,
+                "misc_check": false
             }
         };
         let attributeListEl = document.querySelector("#attributeList");
+
         attributeListEl.addEventListener("input", (e)=>{
             if (e.target.id != "newPassword" && e.target.id != "reenterPassword") {
                 return;
             } 
 
             let val = e.target.value;
+            let whiteCheckEl = e.target.parentElement.lastElementChild.querySelector(".white_check");
             let lengthCheckEl = e.target.parentElement.lastElementChild.querySelector(".length_check");
-            let numberCheckEl = e.target.parentElement.lastElementChild.querySelector(".number_check");
-            let lowerCheckEl = e.target.parentElement.lastElementChild.querySelector(".lower_check");
-            let upperCheckEl = e.target.parentElement.lastElementChild.querySelector(".upper_check");
+            let msicCheckEl = e.target.parentElement.lastElementChild.querySelector(".misc_check");
 
-            if(lengthReg.test(val)) {
-                lengthCheckEl.classList.remove("fail");
-                lengthCheckEl.classList.add("pass");
-                lengthCheckEl.firstElementChild.classList.remove("fa-ban");
-                lengthCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap[e.target.id]["length_validated"] = true;
-            } else {
-                lengthCheckEl.classList.remove("pass")
-                lengthCheckEl.classList.add("fail");
-                lengthCheckEl.firstElementChild.classList.remove("fa-check-circle");
-                lengthCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap[e.target.id]["length_validated"] = false;
-            }
-
-            if(numberReg.test(val)) {
-                numberCheckEl.classList.remove("fail");
-                numberCheckEl.classList.add("pass");
-                numberCheckEl.firstElementChild.classList.remove("fa-ban");
-                numberCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap[e.target.id]["number_validated"] = true;
-            } else {
-                numberCheckEl.classList.remove("pass");
-                numberCheckEl.classList.add("fail");
-                numberCheckEl.firstElementChild.classList.remove("fa-check-circle");
-                numberCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap[e.target.id]["number_validated"] = false;
-            }
-
-            if(lowerReg.test(val)) {
-                lowerCheckEl.classList.remove("fail");
-                lowerCheckEl.classList.add("pass");
-                lowerCheckEl.firstElementChild.classList.remove("fa-ban");
-                lowerCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap[e.target.id]["lower_validated"] = true;
-            } else {
-                lowerCheckEl.classList.remove("pass");
-                lowerCheckEl.classList.add("fail");
-                lowerCheckEl.firstElementChild.classList.remove("fa-check-circle");
-                lowerCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap[e.target.id]["lower_validated"] = false;
-            }
-
-            if(upperReg.test(val)) {
-                upperCheckEl.classList.remove("fail");
-                upperCheckEl.classList.add("pass");
-                upperCheckEl.firstElementChild.classList.remove("fa-ban");
-                upperCheckEl.firstElementChild.classList.add("fa-check-circle");
-                validateMap[e.target.id]["upper_validated"] = true;
-            } else {
-                upperCheckEl.classList.remove("pass");
-                upperCheckEl.classList.add("fail");
-                upperCheckEl.firstElementChild.classList.remove("fa-check-circle");
-                upperCheckEl.firstElementChild.classList.add("fa-ban");
-                validateMap[e.target.id]["upper_validated"] = false;
-            }
+            updateCheck(e.target.id, "white_check", whiteCheckEl, whiteReg, val);
+            updateCheck(e.target.id, "length_check", lengthCheckEl, lengthReg, val);
+            updateCheck(e.target.id, "misc_check", miscCheckEl, miscReg, val);
         })
 
-        // Clear the default event listener and set up a new one
+        // Clear the default event listener 
         let continueBtn = document.querySelector("#continue");
         let continueBtnNew = document.createElement("button");
         continueBtnNew.setAttribute("id", "continue");
         continueBtnNew.innerText="Create";
         continueBtn.replaceWith(continueBtnNew);
 
+        // Set up a new one
         continueBtnNew.addEventListener("click", (e)=> {
-
             let newPasswordValidateVals = Object.values(validateMap["newPassword"]);
             let reenterPasswordValidateVals = Object.values(validateMap["reenterPassword"]);
-            // Check if any validation has not passed.
-            let newPasswordValidateRes = newPasswordValidateVals.filter((val) => {
-                if (!val) {
-                    return true;
-                }
-            })
 
-            let reenterPasswordValidateRes = reenterPasswordValidateVals.filter((val) => {
-                if (!val) {
-                    return true;
-                }
-            })
-
-            if (newPasswordValidateRes.length > 0 || reenterPasswordValidateRes.length > 0) {
+            if (isAllChecked(newPasswordValidateRes) && isAllChecked(reenterPasswordValidateRes)) {
+                // all validation pass
+                $element.verify();
+            } else {
                 // Un passed validation exists.
                 alert("Please correct your password and try again.")
                 return;
-            } else {
-                // all validation pass
-                $element.verify();
             }
         })
     </script>
